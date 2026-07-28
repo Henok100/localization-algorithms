@@ -1,4 +1,4 @@
-# Algorithm 4.1 — Centroid of the Intersection Area Using Monte Carlo Integration
+# Algorithm_1 — Centroid of the Intersection Area Using Monte Carlo Integration
 
 **Purpose:** Estimate the centroid of the common intersection region of multiple anchor coverage circles using Monte Carlo integration.
 
