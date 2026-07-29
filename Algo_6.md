@@ -1,21 +1,25 @@
-# Algorithm_6 — Route Smoothing Using a Kalman Filter (One Cycle)
+# Algorithm 6: Route Smoothing Using a Kalman Filter (One Cycle)
 
 **Purpose:** Smooth the estimated UAV route by filtering noisy position observations using a discrete Kalman filter. The algorithm performs one prediction–correction cycle using the latest accepted position estimate.
 
 ## Inputs
-- **Observation:**  
-  \[
+
+- **Observation:**
+
+  $$
   z = (z_X, z_Y)
-  \]
+  $$
+
   after the plausibility filter
-- **Time step:** \(\Delta t\) since the last accepted observation
-- **State vector:** \(x\)
-- **Covariance matrix:** \(P\)
-- **Process noise parameter:** \(q\)
-- **Measurement noise parameter:** \(r\)
+
+- **Time step:** $\Delta t$ since the last accepted observation
+- **State vector:** $x$
+- **Covariance matrix:** $P$
+- **Process noise parameter:** $q$
+- **Measurement noise parameter:** $r$
 - **Initial variances:**
-  - Position variance: \(p_0\)
-  - Velocity variance: \(v_0\)
+  - Position variance: $p_0$
+  - Velocity variance: $v_0$
 
 ## Output
 - Smoothed position:
