@@ -1,18 +1,19 @@
-# Algorithm 4 — Leader Navigation and Waypoint Arrival Detection
+# Algorithm 4: Leader Navigation and Waypoint Arrival Detection
 
 **Purpose:** Navigate the leader UAV toward a target waypoint while robustly detecting waypoint arrival using smoothed position estimates and handling prolonged loss of localization.
 
 ## Inputs
-- **Target waypoint:** \(w\)
-- **Nominal segment origin:** \(s\)
-- **Navigation speed:** \(v\)
-- **Minimum active flight time:** \(t_{\min}\) (0.9 of the nominal duration)
-- **Maximum active flight time:** \(t_{\max}\) (1.2 of the nominal duration)
-- **Proximity threshold:** \(\rho = 250\,\text{m}\)
-- **Confirmation samples:** \(N_a = 6\)
-- **EMA smoothing factor:** \(\alpha = 0.30\)
-- **Control period:** \(\Delta t\)
-- **Emergency timeout threshold:** \(T_{em} = 70\,\text{s}\)
+
+- **Target waypoint:** $w$
+- **Nominal segment origin:** $s$
+- **Navigation speed:** $v$
+- **Minimum active flight time:** $t_{\min}$ (0.9 of the nominal duration)
+- **Maximum active flight time:** $t_{\max}$ (1.2 of the nominal duration)
+- **Proximity threshold:** $\rho = 250\,m$
+- **Confirmation samples:** $N_a = 6$
+- **EMA smoothing factor:** $\alpha = 0.30$
+- **Control period:** $\Delta t$
+- **Emergency timeout threshold:** $T_{em} = 70\,s$
 
 ## Output
 - Leader reaches the waypoint, or aborts due to prolonged absence of valid position estimates
