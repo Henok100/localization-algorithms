@@ -1,4 +1,4 @@
-## Algorithm 4: Sliding-Window PDR Estimation and Distance Conversion
+## Algorithm 2: Sliding-Window PDR Estimation and Distance Conversion
 
 **Input**
 
