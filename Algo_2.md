@@ -1,4 +1,4 @@
-## Algorithm 3: Sliding-Window PDR Estimation and Distance Conversion
+## Algorithm 4: Sliding-Window PDR Estimation and Distance Conversion
 
 **Input**
 - Active anchors $i$ with reception timestamp queue $T_i$; current timestamp $t$; window length $W=10\text{ s}$; broadcast period $\tau=250\text{ ms}$; coefficients $A,B$ of the loss model
