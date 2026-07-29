@@ -1,16 +1,17 @@
-# Algorithm_5 — Plausibility Filter for Position Estimation
+# Algorithm 5: Plausibility Filter for Position Estimation
 
 **Purpose:** Reject physically implausible position estimates caused by transient localization errors while maintaining the last valid estimate. The filter uses a kinematic constraint based on the leader velocity and applies a buffer-based recovery mechanism during prolonged estimation failures.
 
 ## Inputs
-- **Candidate position estimate:** \(p\)
-- **Current time:** \(t\)
-- **Leader velocity:** \(v\)
+
+- **Candidate position estimate:** $p$
+- **Current time:** $t$
+- **Leader velocity:** $v$
 - **State variables:**
-  - Reference position \(p_{\text{ref}}\) (last accepted estimate)
-  - Last acceptance time \(t_{\text{ref}}\)
-  - Initialization buffer \(B\)
-  - Rejection buffer \(R\)
+  - Reference position $p_{\mathrm{ref}}$ (last accepted estimate)
+  - Last acceptance time $t_{\mathrm{ref}}$
+  - Initialization buffer $B$
+  - Rejection buffer $R$
 
 ## Output
 - Published position estimate or maintained last valid estimate
