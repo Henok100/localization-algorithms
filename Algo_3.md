@@ -1,87 +1,34 @@
-# Algorithm_3 — Least-Squares Multilateration
+## Algorithm 2: Least Squares Multilateration
 
-**Purpose:** Estimate the node position using least-squares multilateration based on PDR-derived distances, with a projection step to ensure the solution remains within the feasible communication region.
+**Input**
+- Active anchors $(x_i,y_i)$ with packet count $N_i$ ($i=1,\dots,n$), maximum expected count $N_{\max}$, range $d_{\max}$, fallback centroid $\hat{p}_0$ (Algorithm 1)
 
-## Inputs
-- **Active anchor nodes:** \((x_i, y_i)\), \(i = 1, \ldots, n\)
-- **Packet counts:** \(N_i\)
-- **Maximum expected packet count:** \(N_{\max}\)
-- **Maximum communication range:** \(\hat{d}_{\max}\)
-- **Backup centroid estimate:** \(\hat{p}_0\) (from Algorithm 4.1)
+**Output**
+- Estimated position $(X,Y)$, consistent with the feasibility region
 
-## Output
-- Estimated position \((X, Y)\) consistent with the feasibility region
+**Procedure**
 
----
-1.  for each anchor i = 1 to n do
-
-2.      PDRi ← min(1, max(0, Ni / Nmax))
-
-3.      d̂i ← distance obtained from PDRi
-        // Using Equation (4.3)
-
-4.  end for
-
-5.  gi ← xi² + yi² − d̂i²        (for all i)
-
-6.  Compute:
-        x̄ ← mean({xi})
-        ȳ ← mean({yi})
-        ḡ ← mean({gi})
-
-7.  Saa ← 0
-    Sab ← 0
-    Sbb ← 0
-    Sac ← 0
-    Sbc ← 0
-
-8.  for each anchor i = 1 to n do
-
-9.      a ← 2(xi − x̄)
-        b ← 2(yi − ȳ)
-        c ← gi − ḡ
-
-10.     Saa ← Saa + a²
-        Sab ← Sab + a·b
-        Sbb ← Sbb + b²
-
-11.     Sac ← Sac + a·c
-        Sbc ← Sbc + b·c
-
-12. end for
-
-13. Δ ← Saa·Sbb − Sab²
-    // Determinant of the normal equations
-
-14. if |Δ| < ε then
-15.     return p̂0
-        // Collinear or degenerate geometry
-16. end if
-
-17. X ← (Sbb·Sac − Sab·Sbc) / Δ
-    Y ← (Saa·Sbc − Sab·Sac) / Δ
-
-18. if (X, Y) is within d̂max of all anchor nodes then
-19.     return (X, Y)
-        // Solution is already feasible
-20. end if
-
-21. lo ← 0
-    hi ← 1
-    // Projection onto the feasibility region
-
-22. for k ← 1 to 30 do
-
-23.     t ← (lo + hi) / 2
-
-24.     q ← p̂0 + t((X, Y) − p̂0)
-
-25.     if q is within d̂max of all anchor nodes then
-26.         lo ← t
-27.     else
-28.         hi ← t
-29.     end if
-
-30. end for
-
-31. return p̂0 + lo((X, Y) − p̂0)
+1. **for** $i\leftarrow 1$ **to** $n$ **do**
+   1. $\widehat{\mathrm{PDR}}_i \leftarrow \min\!\big(1,\,\max(0,\,N_i/N_{\max})\big)$
+   2. $\hat{d}_i \leftarrow$ distance obtained from $\widehat{\mathrm{PDR}}_i$ according to Eq. (1)
+2. $g_i \leftarrow x_i^2 + y_i^2 - \hat{d}_i^2$ *(for all $i$)*
+3. $\bar{x},\bar{y},\bar{g} \leftarrow$ means of $\{x_i\},\{y_i\},\{g_i\}$
+4. $S_{aa},S_{ab},S_{bb},S_{ac},S_{bc} \leftarrow 0$
+5. **for** $i\leftarrow 1$ **to** $n$ **do**
+   1. $a \leftarrow 2(x_i-\bar{x})$; $b \leftarrow 2(y_i-\bar{y})$; $c \leftarrow g_i-\bar{g}$
+   2. $S_{aa}\leftarrow S_{aa}+a^2$; $S_{ab}\leftarrow S_{ab}+ab$; $S_{bb}\leftarrow S_{bb}+b^2$
+   3. $S_{ac}\leftarrow S_{ac}+ac$; $S_{bc}\leftarrow S_{bc}+bc$
+6. $\Delta \leftarrow S_{aa}S_{bb}-S_{ab}^2$ *(determinant of the normal equations)*
+7. **if** $|\Delta| < \varepsilon$ **then**
+   - **return** $\hat{p}_0$ *(collinear / degenerate geometry)*
+8. $X \leftarrow (S_{bb}S_{ac}-S_{ab}S_{bc})/\Delta$; $Y \leftarrow (S_{aa}S_{bc}-S_{ab}S_{ac})/\Delta$
+9. **if** $(X,Y)$ is at distance $\leq d_{\max}$ from all anchors **then**
+   - **return** $(X,Y)$ *(already feasible)*
+10. $lo \leftarrow 0$; $hi \leftarrow 1$ *(projection to the feasibility region)*
+11. **for** $k\leftarrow 1$ **to** $30$ **do**
+    1. $t \leftarrow (lo+hi)/2$; $q \leftarrow \hat{p}_0 + t\,\big((X,Y)-\hat{p}_0\big)$
+    2. **if** $q$ is at distance $\leq d_{\max}$ from all anchors **then**
+       - $lo \leftarrow t$
+    3. **else**
+       - $hi \leftarrow t$
+12. **return** $\hat{p}_0 + lo\,\big((X,Y)-\hat{p}_0\big)$
