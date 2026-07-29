@@ -12,7 +12,21 @@
 2. **for** each active anchor $i$ **do**
    1. **while** $T_i \neq \emptyset$ **and** $t - \mathrm{first}(T_i) > W$ **do**
       - discard $\mathrm{first}(T_i)$ *(sliding-window pruning)*
-   2. $\widehat{\mathrm{PDR}}_i \leftarrow \min\!\big(1,\ \max(0,\ |T_i| / c_{\max})\big)$
-   3. $\hat{p}_{\mathrm{loss},i} \leftarrow 1 - \widehat{\mathrm{PDR}}_i$
-   4. $\hat{d}_i \leftarrow \dfrac{-B + \sqrt{B^2 + 4A\,\hat{p}_{\mathrm{loss},i}}}{2A}$ *(inversion of Eq. (1))*
+   2. $\widehat{\mathrm{PDR}}_i
+   \leftarrow
+   \min\left(
+   1,
+   \max\left(
+   0,
+   \frac{|T_i|}{c_{\max}}
+   \right)
+   \right)$
+
+3. $\hat{p}_{\mathrm{loss},i}
+   \leftarrow
+   1-\widehat{\mathrm{PDR}}_i$
+
+4. $\hat{d}_i
+   \leftarrow
+   \frac{-B+\sqrt{B^2+4A\hat{p}_{\mathrm{loss},i}}}{2A}$
 3. **return** $\{\hat{d}_i\}$
