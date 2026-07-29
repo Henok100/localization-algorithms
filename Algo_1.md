@@ -1,51 +1,22 @@
-# Algorithm_1 — Centroid of the Intersection Area Using Monte Carlo Integration
+## Algorithm 1: Intersection Area Centroid via Monte Carlo Integration
 
-**Purpose:** Estimate the centroid of the common intersection region of multiple anchor coverage circles using Monte Carlo integration.
+**Input**
+- Anchors in range $\mathcal{O}=\{o_1,\dots,o_n\}$ ($n\geq 3$), coverage radius $R$
 
-## Inputs
-- **Anchor set:** \( O = \{o_1, o_2, \ldots, o_n\} \), where \( n \geq 3 \)
-- **Coverage radius:** \( R \)
+**Output**
+- Estimated centroid $\hat{p}\in\mathbb{R}^2$, or `null` if there is no intersection
 
-## Output
-- Estimated centroid \( \hat{p} \in \mathbb{R}^2 \)
-- `null` if no common intersection exists
+**Procedure**
 
----
-
-```text
-1.  xmin ← max_i (o_i.x − R)
-2.  xmax ← min_i (o_i.x + R)
-3.  ymin ← max_i (o_i.y − R)
-4.  ymax ← min_i (o_i.y + R)
-
-5.  if xmin ≥ xmax or ymin ≥ ymax then
-6.      return null        // Bounding boxes do not overlap
-7.  end if
-
-8.  Sx ← 0
-9.  Sy ← 0
-10. hits ← 0
-
-11. for k ← 1 to 1000 do
-
-12.     px ← Uniform(xmin, xmax)
-13.     py ← Uniform(ymin, ymax)
-
-14.     if for every o_i ∈ O:
-            (px − o_i.x)² + (py − o_i.y)² ≤ R²
-        then
-
-15.         Sx ← Sx + px
-16.         Sy ← Sy + py
-17.         hits ← hits + 1
-
-18.     end if
-
-19. end for
-
-20. if hits = 0 then
-21.     return null        // Degenerate geometry
-22. end if
-
-23. return p̂ ← (Sx / hits, Sy / hits)
-```
+1. $x_{\min}\leftarrow\max_i(o_i.x-R)$; $x_{\max}\leftarrow\min_i(o_i.x+R)$
+2. $y_{\min}\leftarrow\max_i(o_i.y-R)$; $y_{\max}\leftarrow\min_i(o_i.y+R)$
+3. **if** $x_{\min}\geq x_{\max}$ **or** $y_{\min}\geq y_{\max}$ **then**
+   - **return** `null` *(the bounding boxes do not overlap)*
+4. $S_x\leftarrow 0$; $S_y\leftarrow 0$; $hits\leftarrow 0$
+5. **for** $k\leftarrow 1$ **to** $1000$ **do**
+   1. $p_x\sim\mathcal{U}(x_{\min},x_{\max})$; $p_y\sim\mathcal{U}(y_{\min},y_{\max})$
+   2. **if** $\forall\,o_i\in\mathcal{O}:\;(p_x-o_i.x)^2+(p_y-o_i.y)^2\leq R^2$ **then**
+      - $S_x\leftarrow S_x+p_x$; $S_y\leftarrow S_y+p_y$; $hits\leftarrow hits+1$
+6. **if** $hits=0$ **then**
+   - **return** `null` *(degenerate geometry)*
+7. **return** $\hat{p}=\left(S_x/hits,\;S_y/hits\right)$
