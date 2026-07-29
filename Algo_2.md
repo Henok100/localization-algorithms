@@ -1,37 +1,18 @@
-# Algorithm 2 — Sliding-Window PDR Estimation and Distance Conversion
+## Algorithm 3: Sliding-Window PDR Estimation and Distance Conversion
 
-**Purpose:** Estimate the distance to each active anchor node by computing the Packet Delivery Ratio (PDR) over a sliding time window and converting the packet loss probability into distance.
+**Input**
+- Active anchors $i$ with reception timestamp queue $T_i$; current timestamp $t$; window length $W=10\text{ s}$; broadcast period $\tau=250\text{ ms}$; coefficients $A,B$ of the loss model
 
-## Inputs
-- **Active anchor nodes:** $i$, each with a reception timestamp queue $T_i$
-- **Current time:** $t$
-- **Sliding-window length:** $W = 10\text{ s}$
-- **Broadcast period:** $\tau = 250\text{ ms}$
-- **Loss model coefficients:** $A, B$
+**Output**
+- Estimated distance $\hat{d}_i$ for each active anchor
 
-## Output
-- Estimated distance $\hat{d}_i$ for each active anchor node
+**Procedure**
 
----
-
-```text
-1.  c_max ← W / τ
-    // Expected number of packets within the sliding window (40)
-
-2.  for each active anchor i do
-
-3.      while T_i ≠ ∅ and (t − first(T_i)) > W do
-4.          discard first(T_i)
-            // Remove expired timestamps
-5.      end while
-
-6.      PDR_i ← min(1, max(0, |T_i| / c_max))
-
-7.      p_loss_i ← 1 − PDR_i
-
-8.      d_hat_i ← (−B + √(B² + 4A * p_loss_i)) / (2A)
-        // Inverse of Equation (4.3)
-
-9.  end for
-
-10. return {d_hat_i}
+1. $c_{\max} \leftarrow W / \tau$ *(expected packets in the window ($40$))*
+2. **for** each active anchor $i$ **do**
+   1. **while** $T_i \neq \emptyset$ **and** $t - \mathrm{first}(T_i) > W$ **do**
+      - discard $\mathrm{first}(T_i)$ *(sliding-window pruning)*
+   2. $\widehat{\mathrm{PDR}}_i \leftarrow \min\!\big(1,\ \max(0,\ |T_i| / c_{\max})\big)$
+   3. $\hat{p}_{\mathrm{loss},i} \leftarrow 1 - \widehat{\mathrm{PDR}}_i$
+   4. $\hat{d}_i \leftarrow \dfrac{-B + \sqrt{B^2 + 4A\,\hat{p}_{\mathrm{loss},i}}}{2A}$ *(inversion of Eq. (1))*
+3. **return** $\{\hat{d}_i\}$
